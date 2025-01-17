@@ -1,9 +1,12 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 function AuthPage() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+
+  const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -12,6 +15,7 @@ function AuthPage() {
       setErrorMessage("");
       setUsername("");
       setPassword("");
+      navigate("/candidates");
     } else {
       setErrorMessage("Invalid username or password.");
     }

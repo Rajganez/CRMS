@@ -109,14 +109,15 @@ const ReferCandidateModal = () => {
       form.append("status", formData.status);
       form.append("jobTitle", formData.jobTitle);
       form.append("resume", formData.resume);
-    
+
       const response = await clientAPI.post(ADD_CANDIDATE_ROUTES, form, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
       });
-      dispatch(toggleAdd());
-      console.log("Candidate added:", response.data);
+      if (response.status === 201) {
+        dispatch(toggleAdd());
+      } else alert("Candidate not referred please try again");
     } catch (error) {
       console.error("Error adding candidate:", error);
       alert("Failed to add candidate. Please try again.");

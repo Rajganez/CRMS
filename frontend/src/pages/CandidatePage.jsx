@@ -8,8 +8,6 @@ const CandidatesProfileCard = lazy(() =>
 const UserNavbar = lazy(() => import("../components/UserNavbar"));
 
 const CandidatePage = () => {
-  console.log("Page rendered");
-
   return (
     <>
       <WelcomeCover />
