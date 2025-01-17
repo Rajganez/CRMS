@@ -1,8 +1,14 @@
 import { Router } from "express";
-import { getCandidatesProfiles } from "../controllers/candidatesProfileController.js";
+import {
+  changeCandidateStatus,
+  getCandidatesProfiles,
+  removeCandidate,
+} from "../controllers/candidatesProfileController.js";
 
 const profilesRouter = Router();
 
 profilesRouter.get("/", getCandidatesProfiles);
+profilesRouter.put("/:id/status", changeCandidateStatus);
+profilesRouter.delete("/:id", removeCandidate);
 
 export default profilesRouter;
