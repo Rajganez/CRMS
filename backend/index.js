@@ -9,7 +9,7 @@ await connectToDB;
 
 app.use(
   cors({
-    origin: ["https://workotaskbyraj.netlify.app/"],
+    origin: ["https://workotaskbyraj.netlify.app"],
     // credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE"],
     // allowedHeaders: ["Content-Type", "Authorization"],
