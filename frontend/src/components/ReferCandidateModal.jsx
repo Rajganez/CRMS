@@ -19,6 +19,7 @@ const ReferCandidateModal = () => {
   });
   const [errors, setErrors] = useState({});
 
+  // Job title to be displayed as a dropdown
   const jobTitlesArray = [
     "Frontend Developer",
     "Backend Developer",
@@ -59,6 +60,7 @@ const ReferCandidateModal = () => {
     setFormData((prev) => ({ ...prev, resume: file }));
   };
 
+  // Form Validation and Sanitization
   const validateForm = () => {
     const newErrors = {};
 
@@ -100,6 +102,7 @@ const ReferCandidateModal = () => {
     return Object.keys(newErrors).length === 0;
   };
 
+  // API Call Funtion
   const addCandidate = async () => {
     try {
       const form = new FormData();
@@ -124,9 +127,9 @@ const ReferCandidateModal = () => {
     }
   };
 
+  // Function to submit the Candidate addition form
   const handleSubmit = (e) => {
     e.preventDefault();
-
     if (validateForm()) {
       addCandidate(); // Perform API call
       closeModalHandler(); // Close the modal

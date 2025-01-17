@@ -3,7 +3,7 @@ import { FaArrowCircleUp } from "react-icons/fa";
 
 const ScrollToTopButton = () => {
   const [isVisible, setIsVisible] = useState(false);
-
+  // Adding the Scroll to button for better user experience
   const handleScroll = () => {
     if (window.scrollY > 200) {
       setIsVisible(true); // Show the button after scrolling 200px

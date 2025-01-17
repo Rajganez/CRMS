@@ -19,14 +19,14 @@ const db = client.db(process.env.DB_NAME);
 
 // Function to connect to MongoDB database
 const connectToDB = async () => {
-    try {
-      await client.connect();
-      console.log("Connected to MongoDB...");
-    } catch (error) {
-      console.log("Error connecting to MongoDB", error);
-      process.exit(1);
-    }
-  };
-  
-  export default connectToDB;
-  export { db };
+  try {
+    await client.connect();
+    console.log("Connected to MongoDB...");
+  } catch (error) {
+    console.log("Error connecting to MongoDB", error);
+    process.exit(1);
+  }
+};
+
+export default connectToDB;
+export { db };

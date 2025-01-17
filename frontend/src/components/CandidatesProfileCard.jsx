@@ -41,7 +41,7 @@ const CandidatesProfileCard = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [getAddedCandidate]);
 
-  // Calculate stats
+  // Calculate stats function
   const calculateStats = (data) => {
     return data.reduce((acc, candidate) => {
       acc[candidate.status] = (acc[candidate.status] || 0) + 1;
