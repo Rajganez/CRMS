@@ -8,8 +8,7 @@ const CandidatesProfileCard = lazy(() =>
 const UserNavbar = lazy(() => import("../components/UserNavbar"));
 
 const CandidatePage = () => {
-  // Log only when CandidatePage renders
-  console.log("Candidate page renders");
+  console.log("Page rendered");
 
   return (
     <>

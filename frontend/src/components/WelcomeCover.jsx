@@ -8,7 +8,6 @@ import validator from "validator"; // Import the validator library
 const ReferCandidateModal = lazy(() =>
   import("../components/ReferCandidateModal")
 );
-console.log("welcome initialized");
 
 const WelcomeCover = () => {
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
@@ -22,11 +21,16 @@ const WelcomeCover = () => {
   // Validate and sanitize search term
   const validateAndSanitizeSearch = (value) => {
     const sanitizedValue = validator.trim(value);
-    if (!validator.isAlpha(sanitizedValue, "en-US", { ignore: " " })) {
+
+    if (
+      sanitizedValue &&
+      !validator.isAlpha(sanitizedValue, "en-US", { ignore: " " })
+    ) {
       setErrors("Search term must contain only alphabetic characters");
-      return null;
+    } else {
+      setErrors("");
     }
-    setErrors("");
+
     return sanitizedValue;
   };
 
@@ -35,8 +39,12 @@ const WelcomeCover = () => {
     (e) => {
       const value = e.target.value;
       const sanitizedValue = validateAndSanitizeSearch(value);
-      if (sanitizedValue !== null) {
-        setSearchTerm(sanitizedValue);
+
+      // Update the search term regardless of validation
+      setSearchTerm(value);
+
+      // Dispatch only valid search terms
+      if (sanitizedValue) {
         dispatch(
           setSearch({
             nameSearch: sanitizedValue,
@@ -116,7 +124,7 @@ const WelcomeCover = () => {
                         <div className="absolute right-0 mt-2 bg-white border border-gray-300 rounded-md shadow-md w-40 z-10">
                           <button
                             type="button"
-                            onClick={() => handleFilterClick("Clear")}
+                            onClick={() => handleFilterClick("none")}
                             className="absolute left-24 px-4 py-2 text-sm text-gray-700 hover:bg-gray-200 w-full text-left"
                           >
                             Clear

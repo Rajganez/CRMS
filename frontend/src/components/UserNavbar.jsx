@@ -1,6 +1,6 @@
 const UserNavbar = () => {
-  console.log('user navbar initialized');
-  
+  console.log("Navbar rendered");
+
   return (
     <div className="flex items-center justify-evenly bg-blue-950 shadow-md md:p-4 p-2 rounded-md">
       {/* Profile Section */}

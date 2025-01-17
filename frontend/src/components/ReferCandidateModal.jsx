@@ -11,10 +11,34 @@ const ReferCandidateModal = () => {
     lastName: "",
     email: "",
     phone: "",
+    status: "",
     jobTitle: "",
     resume: null,
   });
   const [errors, setErrors] = useState({});
+  
+  const jobTitlesArray = [
+    "Frontend Developer",
+    "Backend Developer",
+    "UI/UX Designer",
+    "DevOps Engineer",
+    "Full Stack Developer",
+    "Cloud Architect",
+    "Data Scientist",
+    "System Administrator",
+    "QA Engineer",
+    "Mobile App Developer",
+    "AI Engineer",
+    "Security Analyst",
+    "Software Engineer",
+    "Blockchain Developer",
+    "Database Administrator",
+    "Software Architect",
+    "Network Engineer",
+    "Web Developer",
+    "IT Support Specialist",
+    "Game Developer",
+  ];
 
   // Close the modal and dispatch `closeModal` action
   const closeModalHandler = () => {
@@ -60,8 +84,11 @@ const ReferCandidateModal = () => {
       newErrors.phone = "Phone number must be valid";
     }
 
+    if (validator.isEmpty(formData.status)) {
+      newErrors.status = "Status is required";
+    }
     if (validator.isEmpty(formData.jobTitle)) {
-      newErrors.jobTitle = "Job title is required";
+      newErrors.status = "Job title is required";
     }
 
     if (!formData.resume) {
@@ -163,6 +190,26 @@ const ReferCandidateModal = () => {
               )}
             </div>
 
+            {/* Status */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700">
+                Status
+              </label>
+              <select
+                name="status"
+                value={formData.status}
+                onChange={handleInputChange}
+                className="w-full p-2 border rounded-md"
+              >
+                <option value="">Select status</option>
+                <option value="Reviewed">Reviewed</option>
+                <option value="Pending">Pending</option>
+              </select>
+              {errors.status && (
+                <p className="text-sm text-red-500">{errors.status}</p>
+              )}
+            </div>
+
             {/* Job Title */}
             <div>
               <label className="block text-sm font-medium text-gray-700">
@@ -174,12 +221,14 @@ const ReferCandidateModal = () => {
                 onChange={handleInputChange}
                 className="w-full p-2 border rounded-md"
               >
-                <option value="">Select Job Title</option>
-                <option value="Hired">Hired</option>
-                <option value="Reviewed">Reviewed</option>
-                <option value="Pending">Pending</option>
+                <option value="">Select Job title</option>
+                {jobTitlesArray.map((title) => (
+                  <option key={title} value={title}>
+                    {title}
+                  </option>
+                ))}
               </select>
-              {errors.jobTitle && (
+              {errors.status && (
                 <p className="text-sm text-red-500">{errors.jobTitle}</p>
               )}
             </div>
