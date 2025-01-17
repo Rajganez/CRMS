@@ -48,12 +48,27 @@ const statsSlice = createSlice({
   },
 });
 
+// Create Slice for to render the card component
+const addSlice = createSlice({
+  name: "add",
+  initialState: {
+    showAddCard: false,
+  },
+  reducers: { 
+    toggleAdd: (state) => {
+      state.showAddCard = !state.showAddCard;
+    },
+  }
+}) 
+
 // Create the Redux store
 const store = configureStore({
   reducer: {
     search: searchSlice.reducer, // Use the reducer from searchSlice
     modal: modalSlice.reducer, // Use the reducer from modalSlice
     stats: statsSlice.reducer, // Use the reducer from statsSlice
+    add: addSlice.reducer, // Use the reducer from addSlice
+    
   },
 });
 
@@ -61,4 +76,5 @@ const store = configureStore({
 export const { setSearch } = searchSlice.actions;
 export const { openModal, closeModal } = modalSlice.actions;
 export const { updateStats } = statsSlice.actions;
+export const { toggleAdd } = addSlice.actions;
 export default store;

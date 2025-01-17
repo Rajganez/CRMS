@@ -8,8 +8,8 @@ const UserNavbar = () => {
       {/* Profile Section */}
       <div className="flex items-center md:space-x-4 space-x-2">
         {/* Profile Avatar */}
-        <div className="w-12 h-12 rounded-full bg-gray-300 flex items-center justify-center md:text-xl text-sm font-bold text-white">
-          U
+        <div className="w-12 h-12 rounded-full bg-gray-300 flex items-center justify-center md:text-xl text-sm font-bold text-black">
+          JD
         </div>
         {/* User Info */}
         <div>

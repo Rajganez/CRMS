@@ -102,7 +102,7 @@ const WelcomeCover = () => {
                         value={searchTerm}
                         onChange={handleSearchChange}
                         placeholder="Search candidates..."
-                        className="md:p-2 rounded-md text-black"
+                        className="md:p-2 p-1 rounded-md text-black"
                       />
                       {errors && (
                         <p className="text-sm text-red-500">{errors}</p>
@@ -113,9 +113,9 @@ const WelcomeCover = () => {
                       <button
                         type="button"
                         onClick={() => setIsDropdownVisible(!isDropdownVisible)}
-                        className="flex items-center px-4 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700"
+                        className="flex items-center md:px-4 md:py-2 p-1 bg-gray-600 text-white rounded-md hover:bg-gray-700"
                       >
-                        <FaFilter className="mr-2" />{" "}
+                        <FaFilter className="mr-2 md:text-lg text-xs" />{" "}
                         {filterStatus === "Clear" || !filterStatus
                           ? "Filter"
                           : filterStatus}
@@ -125,7 +125,7 @@ const WelcomeCover = () => {
                           <button
                             type="button"
                             onClick={() => handleFilterClick("none")}
-                            className="absolute left-24 px-4 py-2 text-sm text-gray-700 hover:bg-gray-200 w-full text-left"
+                            className="block px-4 py-2 text-sm text-blue-700 hover:bg-gray-200 w-full text-left"
                           >
                             Clear
                           </button>

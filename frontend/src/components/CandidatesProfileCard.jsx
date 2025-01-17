@@ -17,6 +17,8 @@ const CandidatesProfileCard = () => {
   const [candidateToRemove, setCandidateToRemove] = useState(null);
 
   const getSearchTerms = useSelector((state) => state.search);
+  const getAddedCandidate = useSelector((state) => state.add);
+
   const dispatch = useDispatch();
 
   // Fetch candidate data from API
@@ -36,7 +38,8 @@ const CandidatesProfileCard = () => {
 
   useEffect(() => {
     getCandidatesData();
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [getAddedCandidate]);
 
   // Calculate stats
   const calculateStats = (data) => {
@@ -50,7 +53,10 @@ const CandidatesProfileCard = () => {
   const filteredCandidates = useMemo(() => {
     let filteredData = candidateData;
 
-    if (getSearchTerms.filteredValue && getSearchTerms.filteredValue !== "none") {
+    if (
+      getSearchTerms.filteredValue &&
+      getSearchTerms.filteredValue !== "none"
+    ) {
       filteredData = filteredData.filter(
         (candidate) => candidate.status === getSearchTerms.filteredValue
       );
@@ -58,7 +64,9 @@ const CandidatesProfileCard = () => {
 
     if (getSearchTerms.nameSearch) {
       filteredData = filteredData.filter((candidate) =>
-        candidate.name.toLowerCase().includes(getSearchTerms.nameSearch.toLowerCase())
+        candidate.name
+          .toLowerCase()
+          .includes(getSearchTerms.nameSearch.toLowerCase())
       );
     }
 
@@ -117,6 +125,17 @@ const CandidatesProfileCard = () => {
     }
   };
 
+  const handleResume = (resume) => {
+    // Check if the resume URL exists and is valid
+    if (resume) {
+      // Open the resume link in a new tab
+      window.open(resume, "_blank");
+    } else {
+      // Optionally, handle the case when the resume is not available
+      alert("Resume not available");
+    }
+  };
+
   const handleRemove = (id) => {
     setCandidateToRemove(id);
     setOpenRemoveModal(true);
@@ -126,16 +145,24 @@ const CandidatesProfileCard = () => {
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-4">
       {filteredCandidates.map((profile) => (
         <div
-          key={profile.phone}
+          key={profile._id}
           className="bg-white shadow-lg rounded-lg p-6 flex flex-col space-y-4 border border-gray-200"
         >
           <div>
-            <p className="text-lg font-semibold text-gray-800">Name: {profile.name}</p>
-            <p className="text-lg font-semibold text-gray-800">Job Title: {profile.jobTitle}</p>
-            <p className="text-lg font-semibold text-gray-800">Status: {profile.status}</p>
+            <p className="text-lg font-semibold text-gray-800">
+              Name: {profile.name}
+            </p>
+            <p className="text-lg font-semibold text-gray-800">
+              Job Title: {profile.jobTitle}
+            </p>
+            <p className="text-lg font-semibold text-gray-800">
+              Status: {profile.status}
+            </p>
           </div>
           <div className="flex flex-col space-y-2">
-            <label className="text-sm font-medium text-gray-600">Change Status:</label>
+            <label className="text-sm font-medium text-gray-600">
+              Change Status:
+            </label>
             <select
               className="px-4 py-2 text-sm border rounded-md bg-gray-50 text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
               onChange={(e) => handleStatusUpdate(e, profile._id)}
@@ -147,7 +174,11 @@ const CandidatesProfileCard = () => {
             </select>
           </div>
           <div className="flex space-x-2">
-            <button className="px-4 py-2 text-sm text-white bg-blue-600 rounded-md hover:bg-blue-700">
+            <button
+              className="px-4 py-2 text-sm text-white bg-blue-600 
+            rounded-md hover:bg-blue-700"
+              onClick={() => handleResume(profile.resumeLink)}
+            >
               View Resume
             </button>
             <button
