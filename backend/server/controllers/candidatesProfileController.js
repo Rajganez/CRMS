@@ -21,7 +21,7 @@ export const getCandidatesProfiles = async (req, res) => {
 export const changeCandidateStatus = async (req, res) => {
   const { id } = req.params; // Extract candidate ID from the route
   const { status } = req.body; // Extract the new status from the request body
-
+  
   // Validate the request data
   if (!id || !status) {
     return res

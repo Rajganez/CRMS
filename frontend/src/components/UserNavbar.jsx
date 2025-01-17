@@ -1,5 +1,7 @@
+import { useSelector } from "react-redux";
+
 const UserNavbar = () => {
-  console.log("Navbar rendered");
+  const profileStats = useSelector((state) => state.stats);
 
   return (
     <div className="flex items-center justify-evenly bg-blue-950 shadow-md md:p-4 p-2 rounded-md">
@@ -23,14 +25,14 @@ const UserNavbar = () => {
         {/* Hired Box */}
         <div className="text-center">
           <div className="md:w-20 md:h-16 w-15 h-15 bg-green-400 rounded-md flex flex-col items-center justify-center md:text-2xl text-sm md:font-semibold text-black">
-            10
+            {profileStats.Hired}
             <p className="text-sm md:font-medium md:mt-1 md:p-0 p-1">Hired</p>
           </div>
         </div>
         {/* Reviewed Box */}
         <div className="text-center">
           <div className="md:w-20 md:h-16 w-15 h-15 bg-orange-400 rounded-md flex flex-col items-center justify-center md:text-2xl text-sm md:font-semibold text-black">
-            5
+            {profileStats.Reviewed}
             <p className="text-sm md:font-medium md:mt-1 md:p-0 p-1">
               Reviewed
             </p>
@@ -39,7 +41,7 @@ const UserNavbar = () => {
         {/* Pending Box */}
         <div className="text-center">
           <div className="md:w-20 md:h-16 w-15 h-15 bg-yellow-400 rounded-md flex flex-col items-center justify-center md:text-2xl text-sm md:font-semibold text-black">
-            5
+            {profileStats.Pending}
             <p className="text-sm md:font-medium md:mt-1 md:p-0 p-1">Pending</p>
           </div>
         </div>

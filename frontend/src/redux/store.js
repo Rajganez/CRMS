@@ -31,15 +31,34 @@ const modalSlice = createSlice({
   },
 });
 
+// Create a slice for managing the candidates statistics based on the status
+const statsSlice = createSlice({
+  name: "stats",
+  initialState: {
+    Pending: 0,
+    Hired: 0,
+    Reviewed: 0,
+  },
+  reducers: {
+    updateStats: (state, action) => {
+      state.Pending = action.payload.Pending;
+      state.Hired = action.payload.Hired;
+      state.Reviewed = action.payload.Reviewed;
+    },
+  },
+});
+
 // Create the Redux store
 const store = configureStore({
   reducer: {
     search: searchSlice.reducer, // Use the reducer from searchSlice
     modal: modalSlice.reducer, // Use the reducer from modalSlice
+    stats: statsSlice.reducer, // Use the reducer from statsSlice
   },
 });
 
 // Export actions and store
 export const { setSearch } = searchSlice.actions;
 export const { openModal, closeModal } = modalSlice.actions;
+export const { updateStats } = statsSlice.actions;
 export default store;
