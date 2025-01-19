@@ -25,6 +25,14 @@ const CandidatesProfileCard = () => {
 
   const dispatch = useDispatch();
 
+  // Calculate stats function
+  const calculateStats = (data) => {
+    return data.reduce((acc, candidate) => {
+      acc[candidate.status] = (acc[candidate.status] || 0) + 1;
+      return acc;
+    }, {});
+  };
+
   // Fetch candidate data from API
   const getCandidatesData = async (page = 1, limit = 10) => {
     setLoading(true);
@@ -34,11 +42,15 @@ const CandidatesProfileCard = () => {
       );
       if (response.status === 200) {
         setCandidateData(response.data.data);
+        dispatch(updateStats(calculateStats(response.data.data)));
         setCurrentPage(response.data.currentPage);
         setTotalPages(response.data.totalPages);
       }
     } catch (error) {
       console.error("Error fetching candidate data:", error);
+      alert(
+        "An unexpected error occurred in loading candidate. Please try again."
+      );
     } finally {
       setLoading(false);
     }
@@ -47,14 +59,6 @@ const CandidatesProfileCard = () => {
   useEffect(() => {
     getCandidatesData();
   }, [getAddedCandidate]);
-
-  // Calculate stats function
-  const calculateStats = (data) => {
-    return data.reduce((acc, candidate) => {
-      acc[candidate.status] = (acc[candidate.status] || 0) + 1;
-      return acc;
-    }, {});
-  };
 
   // Filter candidates based on search terms
   const filteredCandidates = useMemo(() => {

@@ -96,7 +96,7 @@ export const getCandidatesProfiles = async (req, res) => {
 
   try {
     const candidates = await candidateCollections
-      .find({})
+      .find({}, { projection: { email: 0, phone: 0 } })
       .skip(skip)
       .limit(limit)
       .toArray();
