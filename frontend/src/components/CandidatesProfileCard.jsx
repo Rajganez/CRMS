@@ -39,8 +39,8 @@ const CandidatesProfileCard = () => {
     try {
       const response = await clientAPI.get(`${CANDIDATE_ROUTES}`);
       if (response.status === 200) {
-        setCandidateData(response.data.data);
-        dispatch(updateStats(calculateStats(response.data.data)));
+        setCandidateData(response.data);
+        dispatch(updateStats(calculateStats(response.data)));
         // setCurrentPage(response.data.currentPage);
         // setTotalPages(response.data.totalPages);
       }
