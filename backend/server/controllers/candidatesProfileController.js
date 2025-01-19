@@ -90,13 +90,30 @@ export const addCandidatesForReferral = async (req, res) => {
 //--------------------Get Candidates Profile--------------------//
 
 export const getCandidatesProfiles = async (req, res) => {
+  const page = parseInt(req.query.page) || 1; // Default to page 1
+  const limit = parseInt(req.query.limit) || 10; // Default to 10 documents per page
+  const skip = (page - 1) * limit;
+
   try {
-    const getProfiles = await candidateCollections.find({}).toArray();
-    res.status(200).json(getProfiles);
+    const candidates = await candidateCollections
+      .find({})
+      .skip(skip)
+      .limit(limit)
+      .toArray();
+
+    const total = await candidateCollections.countDocuments();
+
+    res.status(200).json({
+      data: candidates,
+      currentPage: page,
+      totalPages: Math.ceil(total / limit),
+      totalRecords: total,
+    });
   } catch (error) {
-    res
-      .status(500)
-      .json({ message: "Failed to fetch candidate profiles", error });
+    res.status(500).json({
+      message: "Failed to fetch candidate profiles",
+      error,
+    });
   }
 };
 

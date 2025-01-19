@@ -16,29 +16,36 @@ const CandidatesProfileCard = () => {
   const [selectedId, setSelectedId] = useState(null);
   const [candidateToRemove, setCandidateToRemove] = useState(null);
 
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [loading, setLoading] = useState(false);
+
   const getSearchTerms = useSelector((state) => state.search);
   const getAddedCandidate = useSelector((state) => state.add);
 
   const dispatch = useDispatch();
 
   // Fetch candidate data from API
-  const getCandidatesData = async () => {
+  const getCandidatesData = async (page = 1, limit = 10) => {
+    setLoading(true);
     try {
-      const response = await clientAPI.get(CANDIDATE_ROUTES);
+      const response = await clientAPI.get(
+        `${CANDIDATE_ROUTES}?page=${page}&limit=${limit}`
+      );
       if (response.status === 200) {
-        const data = response.data;
-        setCandidateData(data);
-        dispatch(updateStats(calculateStats(data)));
+        setCandidateData(response.data.data);
+        setCurrentPage(response.data.currentPage);
+        setTotalPages(response.data.totalPages);
       }
     } catch (error) {
       console.error("Error fetching candidate data:", error);
-      alert("An unexpected error occurred. Please try again.");
+    } finally {
+      setLoading(false);
     }
   };
 
   useEffect(() => {
     getCandidatesData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [getAddedCandidate]);
 
   // Calculate stats function
@@ -141,55 +148,90 @@ const CandidatesProfileCard = () => {
     setOpenRemoveModal(true);
   };
 
+  const handlePageChange = (page) => {
+    if (page >= 1 && page <= totalPages) {
+      setCurrentPage(page);
+    }
+  };
+
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-4">
-      {filteredCandidates.map((profile) => (
-        <div
-          key={profile._id}
-          className="bg-white shadow-lg rounded-lg p-6 flex flex-col space-y-4 border border-gray-200"
-        >
-          <div>
-            <p className="text-lg font-semibold text-gray-800">
-              Name: {profile.name}
-            </p>
-            <p className="text-lg font-semibold text-gray-800">
-              Job Title: {profile.jobTitle}
-            </p>
-            <p className="text-lg font-semibold text-gray-800">
-              Status: {profile.status}
-            </p>
-          </div>
-          <div className="flex flex-col space-y-2">
-            <label className="text-sm font-medium text-gray-600">
-              Change Status:
-            </label>
-            <select
-              className="px-4 py-2 text-sm border rounded-md bg-gray-50 text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-              onChange={(e) => handleStatusUpdate(e, profile._id)}
-            >
-              <option value="Select">Select</option>
-              <option value="Reviewed">Reviewed</option>
-              <option value="Hired">Hired</option>
-              <option value="Pending">Pending</option>
-            </select>
-          </div>
-          <div className="flex space-x-2">
-            <button
-              className="px-4 py-2 text-sm text-white bg-blue-600 
-            rounded-md hover:bg-blue-700"
-              onClick={() => handleResume(profile.resumeLink)}
-            >
-              View Resume
-            </button>
-            <button
-              className="px-4 py-2 text-sm text-white bg-red-600 rounded-md hover:bg-red-700"
-              onClick={() => handleRemove(profile._id)}
-            >
-              Remove
-            </button>
-          </div>
+    <div>
+      {loading ? (
+        <div className="flex items-center justify-center h-screen">
+          <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-500"></div>
         </div>
-      ))}
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-4">
+          {filteredCandidates.map((profile) => (
+            <div
+              key={profile._id}
+              className="bg-white shadow-lg rounded-lg p-6 flex flex-col space-y-4 border border-gray-200"
+            >
+              <div>
+                <p className="text-lg font-semibold text-gray-800">
+                  Name: {profile.name}
+                </p>
+                <p className="text-lg font-semibold text-gray-800">
+                  Job Title: {profile.jobTitle}
+                </p>
+                <p className="text-lg font-semibold text-gray-800">
+                  Status: {profile.status}
+                </p>
+              </div>
+              <div className="flex flex-col space-y-2">
+                <label className="text-sm font-medium text-gray-600">
+                  Change Status:
+                </label>
+                <select
+                  className="px-4 py-2 text-sm border rounded-md bg-gray-50 text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  onChange={(e) => handleStatusUpdate(e, profile._id)}
+                >
+                  <option value="Select">Select</option>
+                  <option value="Reviewed">Reviewed</option>
+                  <option value="Hired">Hired</option>
+                  <option value="Pending">Pending</option>
+                </select>
+              </div>
+              <div className="flex space-x-2">
+                <button
+                  className="px-4 py-2 text-sm text-white bg-blue-600 
+            rounded-md hover:bg-blue-700"
+                  onClick={() => handleResume(profile.resumeLink)}
+                >
+                  View Resume
+                </button>
+                <button
+                  className="px-4 py-2 text-sm text-white bg-red-600 rounded-md hover:bg-red-700"
+                  onClick={() => handleRemove(profile._id)}
+                >
+                  Remove
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* Pagination Controls */}
+      <div className="flex justify-center items-center space-x-2 mt-4">
+        <button
+          onClick={() => handlePageChange(currentPage - 1)}
+          disabled={currentPage === 1}
+          className="px-4 py-2 bg-gray-200 rounded-md disabled:opacity-50"
+        >
+          Previous
+        </button>
+        <p className="px-2">
+          Page {currentPage} of {totalPages}
+        </p>
+        <button
+          onClick={() => handlePageChange(currentPage + 1)}
+          disabled={currentPage === totalPages}
+          className="px-4 py-2 bg-gray-200 rounded-md disabled:opacity-50"
+        >
+          Next
+        </button>
+      </div>
 
       {/* Confirm Modals */}
       {openConfirmModal && (
