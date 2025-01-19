@@ -16,8 +16,8 @@ const CandidatesProfileCard = () => {
   const [selectedId, setSelectedId] = useState(null);
   const [candidateToRemove, setCandidateToRemove] = useState(null);
 
-  const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
+  // const [currentPage, setCurrentPage] = useState(1);
+  // const [totalPages, setTotalPages] = useState(1);
   const [loading, setLoading] = useState(false);
 
   const getSearchTerms = useSelector((state) => state.search);
@@ -34,17 +34,15 @@ const CandidatesProfileCard = () => {
   };
 
   // Fetch candidate data from API
-  const getCandidatesData = async (page = 1, limit = 10) => {
+  const getCandidatesData = async () => {
     setLoading(true);
     try {
-      const response = await clientAPI.get(
-        `${CANDIDATE_ROUTES}?page=${page}&limit=${limit}`
-      );
+      const response = await clientAPI.get(`${CANDIDATE_ROUTES}`);
       if (response.status === 200) {
         setCandidateData(response.data.data);
         dispatch(updateStats(calculateStats(response.data.data)));
-        setCurrentPage(response.data.currentPage);
-        setTotalPages(response.data.totalPages);
+        // setCurrentPage(response.data.currentPage);
+        // setTotalPages(response.data.totalPages);
       }
     } catch (error) {
       console.error("Error fetching candidate data:", error);
@@ -58,6 +56,7 @@ const CandidatesProfileCard = () => {
 
   useEffect(() => {
     getCandidatesData();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [getAddedCandidate]);
 
   // Filter candidates based on search terms
@@ -152,11 +151,11 @@ const CandidatesProfileCard = () => {
     setOpenRemoveModal(true);
   };
 
-  const handlePageChange = (page) => {
-    if (page >= 1 && page <= totalPages) {
-      setCurrentPage(page);
-    }
-  };
+  // const handlePageChange = (page) => {
+  //   if (page >= 1 && page <= totalPages) {
+  //     setCurrentPage(page);
+  //   }
+  // };
 
   return (
     <div>
@@ -217,7 +216,7 @@ const CandidatesProfileCard = () => {
       )}
 
       {/* Pagination Controls */}
-      <div className="flex justify-center items-center space-x-2 mt-4">
+      {/* <div className="flex justify-center items-center space-x-2 mt-4">
         <button
           onClick={() => handlePageChange(currentPage - 1)}
           disabled={currentPage === 1}
@@ -235,7 +234,7 @@ const CandidatesProfileCard = () => {
         >
           Next
         </button>
-      </div>
+      </div> */}
 
       {/* Confirm Modals */}
       {openConfirmModal && (
