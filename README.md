@@ -61,3 +61,11 @@ The tested API endpoints are documented and can be accessed via the following li
 [Postman API Documentation](https://documenter.getpostman.com/view/34103499/2sAYQakWHS)
 
 ---
+
+## Live URL
+
+Deployed Project can we viewed from below Link
+
+[Live URL](https://workotaskbyraj.netlify.app/)
+
+---
